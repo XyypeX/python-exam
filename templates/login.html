@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Сладкий рай - Вход</title>
+    <style>
+        body { font-family: Arial; display: flex; justify-content: center; align-items: center; height: 100vh; background: #fff5f5; }
+        .login-box { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        input { display: block; width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
+        button { background: #ff6b6b; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; width: 100%; }
+        .error { color: red; margin: 10px 0; }
+        .guest-link { display: block; text-align: center; margin-top: 15px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>🍰 Сладкий рай</h2>
+        {% if error %}<div class="error">{{ error }}</div>{% endif %}
+        <form action="/login" method="POST">
+            <input type="text" name="login" placeholder="Логин" required>
+            <input type="password" name="password" placeholder="Пароль" required>
+            <button type="submit">Войти</button>
+        </form>
+        <a href="/cakes" class="guest-link">Продолжить как гость</a>
+    </div>
+</body>
+</html>
