@@ -67,3 +67,29 @@ def materials_list(page=1):
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
+
+# ========== ПОСТАВЩИКИ ==========
+@app.route('/suppliers')
+@app.route('/suppliers/<int:page>')
+def suppliers_list(page=1):
+    per_page = 6
+    search = request.args.get('search', '')
+    conn = get_db()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    query = "SELECT * FROM suppliers WHERE 1=1"
+    params = []
+    if search:
+        query += " AND name ILIKE %s"
+        params.append(f'%{search}%')
+    query += " ORDER BY name"
+    cur.execute(f"SELECT COUNT(*) FROM ({query}) AS sub", params)
+    total = cur.fetchone()[0]
+    total_pages = max(1, (total + per_page - 1) // per_page)
+    if page < 1: page = 1
+    if page > total_pages: page = total_pages
+    query += f" LIMIT {per_page} OFFSET {(page-1)*per_page}"
+    cur.execute(query, params)
+    suppliers = cur.fetchall()
+    cur.close()
+    conn.close()
+    return render_template('suppliers.html', suppliers=suppliers, page=page, total_pages=total_pages, search=search)

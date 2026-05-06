@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Поставщики</title>
+    <style>
+        body { font-family: Arial; background: #f5f5f5; margin: 0; padding: 20px; }
+        .header { background: #e67e22; color: white; padding: 15px; display: flex; justify-content: space-between; }
+        .header a { color: white; text-decoration: none; margin-left: 10px; }
+        .filters { background: white; padding: 15px; margin: 20px 0; border-radius: 10px; }
+        .filters input { padding: 8px; border: 1px solid #ddd; border-radius: 5px; }
+        .filters button { padding: 8px 15px; background: #e67e22; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; }
+        th { background: #e67e22; color: white; padding: 10px; text-align: left; }
+        td { padding: 10px; border-bottom: 1px solid #eee; }
+        .pagination { text-align: center; margin: 20px 0; }
+        .pagination a { padding: 8px 12px; margin: 0 5px; background: #e67e22; color: white; text-decoration: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏢 Поставщики</h1>
+        <div>
+            <a href="/materials">Материалы</a>
+            {% if session.user %}<a href="/logout">Выйти</a>{% endif %}
+        </div>
+    </div>
+    <div class="filters">
+        <form method="GET" action="/suppliers" style="display:flex;gap:10px;">
+            <input type="text" name="search" placeholder="Поиск поставщика..." value="{{ search }}">
+            <button type="submit">Найти</button>
+        </form>
+    </div>
+    <table>
+        <tr><th>Название</th><th>Тип</th><th>ИНН</th><th>Рейтинг</th><th>Дата начала</th></tr>
+        {% for s in suppliers %}
+        <tr>
+            <td>{{ s.name }}</td>
+            <td>{{ s.type }}</td>
+            <td>{{ s.inn }}</td>
+            <td>{{ s.rating }}</td>
+            <td>{{ s.start_date }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% if total_pages > 1 %}
+    <div class="pagination">
+        {% if page > 1 %}<a href="/suppliers/{{ page-1 }}?search={{ search }}">Назад</a>{% endif %}
+        <span>Стр. {{ page }} из {{ total_pages }}</span>
+        {% if page < total_pages %}<a href="/suppliers/{{ page+1 }}?search={{ search }}">Вперёд</a>{% endif %}
+    </div>
+    {% endif %}
+</body>
+</html>
