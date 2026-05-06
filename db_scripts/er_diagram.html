@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>ER-диаграмма БД "Сладкий рай"</title>
+<style>body{font-family:Arial;padding:20px}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ddd;padding:8px}th{background:#ff6b6b;color:white}h2{color:#333}.fk{color:#666;font-style:italic}</style>
+</head>
+<body>
+<h1>ER-диаграмма БД "Сладкий рай"</h1>
+<h2>Таблицы</h2>
+<table>
+<tr><th>Таблица</th><th>Поля</th></tr>
+<tr><td>roles</td><td><b>id (PK)</b>, name</td></tr>
+<tr><td>users</td><td><b>id (PK)</b>, login, password, fio, <span class="fk">role_id (FK→roles.id)</span></td></tr>
+<tr><td>categories</td><td><b>id (PK)</b>, name</td></tr>
+<tr><td>cake_types</td><td><b>id (PK)</b>, name</td></tr>
+<tr><td>confectioneries</td><td><b>id (PK)</b>, name, address, phone</td></tr>
+<tr><td>suppliers</td><td><b>id (PK)</b>, name, contact_info</td></tr>
+<tr><td>cakes</td><td><b>id (PK)</b>, name, <span class="fk">category_id (FK)</span>, <span class="fk">cake_type_id (FK)</span>, description, <span class="fk">confectionery_id (FK)</span>, <span class="fk">supplier_id (FK)</span>, price, unit, quantity_in_stock, discount, image_path</td></tr>
+<tr><td>order_statuses</td><td><b>id (PK)</b>, name</td></tr>
+<tr><td>pickup_points</td><td><b>id (PK)</b>, address, working_hours</td></tr>
+<tr><td>orders</td><td><b>id (PK)</b>, <span class="fk">user_id (FK)</span>, <span class="fk">status_id (FK)</span>, <span class="fk">pickup_point_id (FK)</span>, order_date, delivery_date, total_amount</td></tr>
+<tr><td>order_items</td><td><b>id (PK)</b>, <span class="fk">order_id (FK)</span>, <span class="fk">cake_id (FK)</span>, quantity, price</td></tr>
+</table>
+<h2>Связи (Foreign Keys)</h2>
+<table>
+<tr><th>Таблица</th><th>Поле</th><th>Ссылка</th></tr>
+<tr><td>users</td><td>role_id</td><td>→ roles.id</td></tr>
+<tr><td>cakes</td><td>category_id</td><td>→ categories.id</td></tr>
+<tr><td>cakes</td><td>cake_type_id</td><td>→ cake_types.id</td></tr>
+<tr><td>cakes</td><td>confectionery_id</td><td>→ confectioneries.id</td></tr>
+<tr><td>cakes</td><td>supplier_id</td><td>→ suppliers.id</td></tr>
+<tr><td>orders</td><td>user_id</td><td>→ users.id</td></tr>
+<tr><td>orders</td><td>status_id</td><td>→ order_statuses.id</td></tr>
+<tr><td>orders</td><td>pickup_point_id</td><td>→ pickup_points.id</td></tr>
+<tr><td>order_items</td><td>order_id</td><td>→ orders.id</td></tr>
+<tr><td>order_items</td><td>cake_id</td><td>→ cakes.id</td></tr>
+</table>
+</body></html>
